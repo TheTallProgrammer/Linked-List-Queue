@@ -13,10 +13,10 @@ Queue::~Queue(){
     clearQueue();
 } // End of destructor
 
-bool Queue::enqueue(int id, const string*data){
+bool Queue::enqueue(int id, string*data){
     bool didEnqueue = false;
     bool hasDupe = testDuplicate(&id);
-    if(!hasDupe){
+    if((id > 0 && data->length() > 0) && !hasDupe){
         Node *newNode = new Node();
         initializeNode(&id, data, newNode);
         if(!front){
@@ -63,7 +63,7 @@ void Queue::printQueue(){
 void Queue::getQueueElement(int id, Data *data){
     Node *position = front;
     bool gotNode = false;
-    while (position != nullptr && !gotNode) {
+    while (position->next != nullptr && !gotNode) {
         if(id == position->data.id){
             data->id = position->data.id;
             data->data = position->data.data;
@@ -74,11 +74,13 @@ void Queue::getQueueElement(int id, Data *data){
     }
 } // End of getQueueElement
 
-bool Queue::isEmpty() {return front== nullptr;} // End of isEmpty
+bool Queue::isEmpty() {return front == nullptr;} // End of isEmpty
 
 bool Queue::peek(Data *data){
-    data->id = front->data.id;
-    data->data = front->data.data;
+    if(!isEmpty()){
+        data->id = front->data.id;
+        data->data = front->data.data;
+    }
     return front;
 } // End of peek
 
@@ -111,7 +113,7 @@ bool Queue::testDuplicate(int *id) {
 } // End of testDuplicate
 
 // Private methods
-void Queue::initializeNode(int *id, const string *data, Node *newNode){
+void Queue::initializeNode(int *id, string *data, Node *newNode){
     newNode->data.id = *id;
     newNode->data.data = *data;
     newNode->next = nullptr;

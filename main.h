@@ -9,15 +9,16 @@
 #include <iostream>     /* cout, endl */
 #include <stdlib.h>     /* srand, rand */
 #include <time.h>       /* time */
-#include "functions.h"
 #include "queue.h"
 
-// used to make a test case number between 5 and 25
-// do not alter these
-#define TEST_CASE_BASE 20
-#define TEST_CASE_OFFSET 5
+#define BUFFERSIZE 8
+#define MAXID 100
+#define BASE 5
+#define OFFSET 20
 
 using std::cout;
 using std::endl;
+using std::string;
+
 
 #endif /* STACKS_MAIN_H */

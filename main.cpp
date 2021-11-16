@@ -1,188 +1,192 @@
 #include "main.h"
 
 int main() {
-    /**************************************************************/
-    /* DO NOT MODIFY ANYTHING BETWEEN THIS LINE AND THE ONE BELOW */
-    /**************************************************************/
-
-    //this program uses rand, this is the seed (do this only once!)
+    // ===== CREATING TEST DATA =====
+    //seed the rand function
     srand(time(NULL));
 
-    // making 5 - 25 test cases
-    int number_test_cases = rand() % (TEST_CASE_BASE + 1) + TEST_CASE_OFFSET;
+    /*
+     * This code makes test data of 6 - 25 entries
+     * Note this guarantees at least one non unique id and one bad id
+     * Do not modify this code from here to the next comment telling
+     * you to "START HERE"
+     */
+    const int testdatasize = BASE + (rand() % OFFSET + 1);
+    int ids[testdatasize];
+    string strs[testdatasize];
 
-    //making test case parallel arrays to hold test data
-    int ids[number_test_cases];
-    char *data[number_test_cases];
-    for (int i = 0; i < number_test_cases; i++) {
-        data[i] = new char[BUFFER_SIZE];
-    }
-
-    //filling arrays with test case data
-    cout << "Making " << number_test_cases << " test cases..." << endl;
-    make_test_cases(ids, data, number_test_cases);
-    cout << "Test cases done" << endl << endl;
-    display_test_cases(ids, data, number_test_cases);
-
-    /**************************************************************/
-    /* MODIFY THE FILE FROM HERE DOWN */
-    /**************************************************************/
-
-    std::cout << "\n======================\n" << std::endl;
-
-    // ------------------- INITIAL TESTS ------------------- //
-    Queue queue;
-    bool tempBool;
-    Data data1;
-    Data data2;
-    Data data3;
-    Data data4;
-
-    // == INITIAL TESTS ==
-
-    std::cout << "is queue empty? ";
-    tempBool = queue.isEmpty();
-    if(tempBool == true){
-        std::cout << "yes" << std::endl;
-    } else {
-        std::cout << "no" << std::endl;
-    }
-
-    std::cout << "\nPrinting:" << std::endl;
-    queue.printQueue();
-    std::cout << "\ncurrent size: " << queue.size() << std::endl;
-
-    std::cout << "" << std::endl;
-
-    // == ADDING ELEMENT ==
-
-    for(int i =0; i < number_test_cases; i++){
-        std::cout << "inserting element: " << ids[i];
-        const std::string tempString = data[i];
-        tempBool = queue.enqueue(ids[i], &tempString);
-        std::cout << " : Success? ";
-        if(tempBool == false){
-            std::cout << "no" << std::endl;
-        } else {
-            std::cout << "yes" << std::endl;
+    char buffer[BUFFERSIZE];
+    for (int i = 0; i < testdatasize; i++) {
+        ids[i] = rand() % MAXID + 1;
+        for (int j = 0; j < BUFFERSIZE - 1; j++) {
+            buffer[j] = 'a' + i;
         }
+        buffer[BUFFERSIZE - 1] = '\0';
+        strs[i] = buffer;
     }
+//    ids[testdatasize-2] = ids[testdatasize-3];
+//    strs[testdatasize-2] = "known duplicate";
+//    ids[testdatasize-1] = - 1;
+//    strs[testdatasize-1] = "known bad";
 
-    std::cout << "\nPrinting:" << std::endl;
-    queue.printQueue();
-    std::cout << "\ncurrent size: " << queue.size() << std::endl;;
+    /*
+     * Show test data
+     */
+    cout << "Showing Test Data (" << testdatasize << " entries)..." << endl;
+    for (int i = 0; i < testdatasize; i++) {
+        cout << ids[i] << " : " << strs[i] << endl;
+    }
+    cout << endl;
 
-    // == PEEKING ==
+// ===== BEGINNING THE TESTING =====
 
-    std::cout << "\ncan peek?";
-    tempBool = queue.peek(&data1);
-    if(tempBool == true){
-        std::cout << " yes" << std::endl;
-        std::cout << "Peeked id: " << data1.id << " : data: " << data1.data << std::endl;
+    bool didInsert = false;
+    bool didRemove = false;
+    int rNumCase = 0;
+    int rNumIndex = 0;
+    int id = 0;
+    int iterationCount = 1;
+
+    // create your queue object here
+    Queue queue;
+
+    std::cout << "\nCurrent amount of entries: " << queue.size() << std::endl;
+    std::cout << "Can peek first element? ";
+
+    bool canPeek;
+    Data data;
+    canPeek = queue.peek(&data);
+    if(canPeek){
+        std::cout << "yes. id: " << data.id << " : data: " << data.data << std::endl;
     } else {
-        std::cout << " no" << std::endl;
+        std::cout << "no." << std::endl;
     }
-
-    // == RETRIEVING ==
-
-    std::cout << "\nRetrieving queue with id: " << ids[1] << std::endl;
-    queue.getQueueElement(ids[1], &data2);
-    std::cout << "Retrieved id: " << data2.id << " : data: " << data2.data << std::endl;
-
-    // == REMOVING ELEMENT ==
-
-    std::cout << "\nAttempting to dequeue front element : Success? ";
-    tempBool = queue.dequeue();
-    if(tempBool == true){
-        std::cout << "yes" << std::endl;
-    } else {
-        std::cout << "no" << std::endl;
-    }
-
-    std::cout << "\ncurrent size: " << queue.size() << std::endl;
-
-    std::cout << "\nPrinting:" << std::endl;
-    queue.printQueue();
-
-    // == ADDING ELEMENT ==
-
-    std::cout << "inserting element: " << ids[1];
-    const std::string tempString = data[1];
-    tempBool = queue.enqueue(ids[1], &tempString);
-    std::cout << " : Success? ";
-    if(tempBool == false){
-        std::cout << "no" << std::endl;
-    } else {
-        std::cout << "yes" << std::endl;
-    }
-
-
-    std::cout << "\nPrinting:" << std::endl;
-    queue.printQueue();
-
-    // == CLEARING ==
-
-    std::cout << "\nclearing" << std::endl;
-    queue.clearQueue();
-
-    std::cout << "\ncurrent size: " << queue.size() << std::endl;
-
-    std::cout << "\nPrinting:" << std::endl;
-    queue.printQueue();
-
-    // == ADDING ELEMENT ==
 
     std::cout << std::endl;
-    for(int i =0; i < number_test_cases; i++){
-        std::cout << "inserting element: " << ids[i];
-        const std::string tempString = data[i];
-        tempBool = queue.enqueue(ids[i], &tempString);
-        std::cout << " : Success? ";
-        if(tempBool == false){
-            std::cout << "no" << std::endl;
-        } else {
+    std::cout << "printing queue: " << std::endl;
+    queue.printQueue();
+
+    // try and put ALL the test data into the table and show what happens
+    // Testing insert/remove methods
+    std::cout << "\n**TESTING ENQUEUE/DEQUEUE**" << std::endl;
+    for(int i =0; i < testdatasize; i++){
+        didInsert = queue.enqueue(ids[i], &strs[i]);
+        std::cout << "Enqueue of front element with id " << ids[i] << " successful? ";
+        if(didInsert == true){
             std::cout << "yes" << std::endl;
+        } else {
+            std::cout << "no" << std::endl;
         }
     }
-
-    std::cout << "\nPrinting:" << std::endl;
+    std::cout << "\nCurrent amount of entries: " << queue.size() << std::endl;
+    std::cout << "printing queue: " << std::endl;
     queue.printQueue();
-    std::cout << "\ncurrent size: " << queue.size() << std::endl;
+    std::cout << std::endl;
 
-    // == CLEARING ==
+    queue.getQueueElement(ids[1], &data);
+    std::cout << "got queue of id: " << data.id << " : data: " << data.data << std::endl;
 
-    std::cout << "\nclearing" << std::endl;
+    std::cout << "Can peek first element? ";
+    canPeek = queue.peek(&data);
+    if(canPeek){
+        std::cout << "yes. id: " << data.id << " : data: " << data.data << std::endl;
+    } else {
+        std::cout << "no." << std::endl;
+    }
+    std::cout << std::endl;
+
+    // Removing the nodes (dequeue)
+    for(int i =0; i < testdatasize; i++){
+        queue.peek(&data);
+        didRemove = queue.dequeue();
+        std::cout << "Dequeue of front element with id " << data.id << " successful? ";
+        if(didRemove == true){
+            std::cout << "yes" << std::endl;
+        } else {
+            std::cout << "no" << std::endl;
+        }
+    }
+    std::cout << "\nCurrent amount of entries: " << queue.size() << std::endl;
+    std::cout << "printing queue: " << std::endl;
+    queue.printQueue();
+
+    // Main testing for loop
+    std::cout << "\n**TESTING ALL METHODS**" << std::endl;
+    for(int i =0; i < 1000; i++){
+        // Picks random index
+        rNumIndex = (rand() % testdatasize);
+        rNumCase = (rand()%3)+1;
+        Data data;
+        bool canPeek = false;
+        bool didDequeue = false;
+        std::cout<<"\nIteration: " << iterationCount << std::endl;
+
+        switch(rNumCase){
+            case 1:
+                std::cout << "=============================" << std::endl;
+                std::cout << "Enqueue of front element with id " << ids[rNumIndex] << " successful? ";
+                didInsert = queue.enqueue(ids[rNumIndex], &strs[rNumIndex]);
+                if(didInsert == true){
+                    std::cout << "yes" << std::endl;
+                } else {
+                    std::cout << "no" << std::endl;
+                }
+                std::cout << "\nCurrent amount of entries: " << queue.size() << std::endl;
+                std::cout << "printing queue: " << std::endl;
+                queue.printQueue();
+                std::cout << std::endl;;
+                break;
+
+            case 2:
+                std::cout << "=============================" << std::endl;
+                std::cout << "case 2" << std::endl;
+                queue.getQueueElement(ids[rNumIndex], &data);
+                std::cout << "got queue of id: " << data.id << " : data: " << data.data << std::endl;
+
+                std::cout << "Can peek first element? ";
+                canPeek = queue.peek(&data);
+                if(canPeek){
+                    std::cout << "yes. id: " << data.id << " : data: " << data.data << std::endl;
+                } else {
+                    std::cout << "no." << std::endl;
+                }
+                std::cout << std::endl;
+
+                didDequeue = queue.dequeue();
+                std::cout << "Dequeue of front element with id " << data.id << " successful? ";
+                if(didDequeue == true){
+                    std::cout << "yes" << std::endl;
+                } else {
+                    std::cout << "no" << std::endl;
+                }
+                std::cout << "\nCurrent amount of entries: " << queue.size() << std::endl;
+                std::cout << "printing queue: " << std::endl;
+                queue.printQueue();
+                break;
+
+            case 3:
+                std::cout << "=============================" << std::endl;
+                std::cout << "case 3" << std::endl;
+                queue.getQueueElement(ids[rNumIndex], &data);
+                std::cout << "data from id: " << ids[rNumIndex] << ": " << data.id << ", " << data.data << std::endl;
+                break;
+        }
+        iterationCount++;
+    }
+
+    std::cout << "\n====== CLEARING QUEUE ======" << std::endl;
     queue.clearQueue();
-
-    std::cout << "\ncurrent size: " << queue.size() << std::endl;
-
-    std::cout << "\nPrinting:" << std::endl;
+    std::cout << "QUEUE CLEARED" << std::endl;
+    std::cout << "\nprinting queue: " << std::endl;
     queue.printQueue();
 
-    int dupeIds[2] = {1,1};
-    std::string string = data[0];
-    std::cout << "\ninserting element: " << dupeIds[0];
-    tempBool = queue.enqueue(dupeIds[0], &string);
-    std::cout << " : Success? ";
-    if(tempBool == false){
-        std::cout << "no" << std::endl;
-    } else {
-        std::cout << "yes" << std::endl;
-    }
+    std::cout << "\n***************\nTESTS CONCLUDED\n***************" << std::endl;
 
 
-    std::string newstring = data[1];
-    std::cout << "inserting element: " << dupeIds[1];
-    tempBool = queue.enqueue(dupeIds[1], &newstring);
-    std::cout << " : Success? ";
-    if(tempBool == false){
-        std::cout << "no" << std::endl;
-    } else {
-        std::cout << "yes" << std::endl;
-    }
 
-    std::cout << "\nPrinting:" << std::endl;
-    queue.printQueue();
+    // continue using and testing your table, add and remove data,
+    // do whatever it takes to full test your object and prove it
+    // is robust and can handle all use cases.
 
     return 0;
 }

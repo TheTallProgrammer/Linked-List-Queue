@@ -17,7 +17,7 @@ public:
     ~Queue();
 
     // Methods
-    bool enqueue(int, const string *);
+    bool enqueue(int, string *);
     bool dequeue();
     void printQueue();
     void getQueueElement(int, Data *);
@@ -26,7 +26,7 @@ public:
     int size();
     bool clearQueue();
     bool testDuplicate(int *);
-    void initializeNode(int *, const string *, Node *);
+    void initializeNode(int *, string *, Node *);
 
 private:
 
