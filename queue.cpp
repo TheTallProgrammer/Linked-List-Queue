@@ -6,6 +6,7 @@
 
 Queue::Queue(){
     front = nullptr, back = nullptr;
+    count = 0;
 } // End of constructor
 
 Queue::~Queue(){
@@ -20,34 +21,42 @@ bool Queue::enqueue(int id, const string*data){
         initializeNode(&id, data, newNode);
         if(!front){
             front = newNode;
-            back = newNode;
+            back = front;
         } else {
             back->next = newNode;
+            back = newNode;
+            newNode->next = nullptr;
         }
+        count++;
+        didEnqueue = true;
     }
     return didEnqueue;
 } // End of enqueue
 
 bool Queue::dequeue(){
     bool didDequeue = false;
-    if(!isEmpty()){
-        for(int i =0; i < back-1; i++){
-            queue[i]->id = queue[i+1]->id;
-            queue[i]->data = queue[i+1]->data;
-        }
-        queue[back-1]->id = 0;
-        queue[back-1]->data = "";
-        delete queue[back-1];
-        back--;
-        didDequeue = true;
-    }
+//    if(!isEmpty()){
+//        for(int i =0; i < back-1; i++){
+//            queue[i]->id = queue[i+1]->id;
+//            queue[i]->data = queue[i+1]->data;
+//        }
+//        queue[back-1]->id = 0;
+//        queue[back-1]->data = "";
+//        delete queue[back-1];
+//        back--;
+//        didDequeue = true;
+//    }
     return didDequeue;
 } // End of dequeue
 
 void Queue::printQueue(){
     if(!isEmpty()) {
-        for (int i = 0; i < back; i++) {
-            std::cout << "\tposition: " << i << " : id: " << queue[i]->id << " : data: " << queue[i]->data << std::endl;
+        Node *position = front;
+        int iteration = 0;
+        while(position!= nullptr){
+            std::cout << "\tposition: " << iteration << " : id: " << position->data.id << " : data: " << position->data.data << std::endl;
+            position = position->next;
+            iteration++;
         }
     } else {
         std::cout << "\tno data to print" << std::endl;
@@ -55,40 +64,44 @@ void Queue::printQueue(){
 } // End of printQueue
 
 void Queue::getQueueElement(int id, Data *data){
-    for(int i =0; i < back; i++){
-        if(queue[i]->id == id){
-
-        }
-    }
+//    for(int i =0; i < back; i++){
+//        if(queue[i]->id == id){
+//
+//        }
+//    }
 } // End of getQueueElement
 
-bool Queue::isEmpty() {return back==0;} // End of isEmpty
+bool Queue::isEmpty() {return front== nullptr;} // End of isEmpty
 
 bool Queue::peek(Data *data){
     bool canPeek = false;
-    if(!isEmpty()){
-
-        canPeek = true;
-    }
+//    if(!isEmpty()){
+//
+//        canPeek = true;
+//    }
     return canPeek;
 } // End of peek
 
-int Queue::size(){return back;} // End of size
+int Queue::size(){return count;} // End of size
 
 void Queue::clearQueue(){
-    if(!isEmpty()) {
-        for(int i = back-1; i >= 0; i--) {
-
-            back--;
-        }
-    }
+//    if(!isEmpty()) {
+//        for(int i = back-1; i >= 0; i--) {
+//
+//            back--;
+//        }
+//    }
 } // End of clearQueue
 
 bool Queue::testDuplicate(int *id) {
     bool hasDupe = false;
     Node *position = front;
-    while ((front != nullptr) && *id > position->data.id && position->next != nullptr) {position = position->next;}
-    if(front != nullptr && *id == position->data.id) {hasDupe = true;}
+    while ((front != nullptr) && hasDupe == false && position->next != nullptr) {
+        if(front != nullptr && *id == position->data.id) {hasDupe = true;} else {
+            position = position->next;
+            if(*id == position->data.id){hasDupe = true;}
+        }
+    }
     return hasDupe;
 } // End of testDuplicate
 

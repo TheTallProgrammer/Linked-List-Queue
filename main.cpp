@@ -168,6 +168,7 @@ int main() {
     } else {
         std::cout << "yes" << std::endl;
     }
+    
 
     std::string newstring = data[1];
     std::cout << "inserting element: " << dupeIds[1];

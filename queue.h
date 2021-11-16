@@ -31,6 +31,7 @@ public:
 private:
 
     Node *front, *back;
+    int count;
 
 };
 
