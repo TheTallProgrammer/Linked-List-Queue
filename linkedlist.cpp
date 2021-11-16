@@ -9,7 +9,7 @@ LinkedList::LinkedList() {
 } // End of constructor
 
 LinkedList::~LinkedList(){
-
+    clearList();
 } // End of destructor
 
 //Methods

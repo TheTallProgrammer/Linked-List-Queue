@@ -5,9 +5,7 @@
 #ifndef QUEUE_PROJECT_QUEUE_H
 #define QUEUE_PROJECT_QUEUE_H
 
-#define QUEUESIZE 10
 #include "data.h"
-#include "linkedlist.h"
 #include <iostream>
 
 class Queue{
@@ -28,11 +26,11 @@ public:
     int size();
     void clearQueue();
     bool testDuplicate(int *);
+    void initializeNode(int *, const string *, Node *);
 
 private:
 
-    int front, back;
-    LinkedList *queue[QUEUESIZE];
+    Node *front, *back;
 
 };
 

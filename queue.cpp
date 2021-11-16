@@ -5,8 +5,7 @@
 #include "queue.h"
 
 Queue::Queue(){
-    front = 0;
-    back = 0;
+    front = nullptr, back = nullptr;
 } // End of constructor
 
 Queue::~Queue(){
@@ -15,19 +14,15 @@ Queue::~Queue(){
 
 bool Queue::enqueue(int id, const string*data){
     bool didEnqueue = false;
-    if(back < QUEUESIZE){
-        if(id >= 0 && data->length() > 0){
-            bool hasDupe = testDuplicate(&id);
-            if(!hasDupe){
-                // Allocating new memory for new Data struct that will be added to the queue
-                Data *newData = new Data;
-                newData->id = id;
-                // Have to dereference the data string in order to get its contents
-                newData->data = *data;
-                // Executes code and enqueues the data into the queue, then increments the back int
-                queue[back++] = newData;
-                didEnqueue = true;
-            }
+    bool hasDupe = testDuplicate(&id);
+    if(!hasDupe){
+        Node *newNode = new Node();
+        initializeNode(&id, data, newNode);
+        if(!front){
+            front = newNode;
+            back = newNode;
+        } else {
+            back->next = newNode;
         }
     }
     return didEnqueue;
@@ -62,8 +57,7 @@ void Queue::printQueue(){
 void Queue::getQueueElement(int id, Data *data){
     for(int i =0; i < back; i++){
         if(queue[i]->id == id){
-            data->id = queue[i]->id;
-            data->data = queue[i]->data;
+
         }
     }
 } // End of getQueueElement
@@ -73,8 +67,7 @@ bool Queue::isEmpty() {return back==0;} // End of isEmpty
 bool Queue::peek(Data *data){
     bool canPeek = false;
     if(!isEmpty()){
-        data->id = queue[front]->id;
-        data->data = queue[front]->data;
+
         canPeek = true;
     }
     return canPeek;
@@ -85,7 +78,7 @@ int Queue::size(){return back;} // End of size
 void Queue::clearQueue(){
     if(!isEmpty()) {
         for(int i = back-1; i >= 0; i--) {
-            delete queue[i];
+
             back--;
         }
     }
@@ -93,10 +86,15 @@ void Queue::clearQueue(){
 
 bool Queue::testDuplicate(int *id) {
     bool hasDupe = false;
-    for(int i = 0; i < back; i++){
-        if(queue[i]->id == *id){
-            hasDupe = true;
-        }
-    }
+    Node *position = front;
+    while ((front != nullptr) && *id > position->data.id && position->next != nullptr) {position = position->next;}
+    if(front != nullptr && *id == position->data.id) {hasDupe = true;}
     return hasDupe;
 } // End of testDuplicate
+
+// Private methods
+void Queue::initializeNode(int *id, const string *data, Node *newNode){
+    newNode->data.id = *id;
+    newNode->data.data = *data;
+    newNode->next = nullptr;
+} // End of initializeNode
