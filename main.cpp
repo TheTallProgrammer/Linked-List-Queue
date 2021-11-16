@@ -132,6 +132,7 @@ int main() {
 
     // == ADDING ELEMENT ==
 
+    std::cout << std::endl;
     for(int i =0; i < number_test_cases; i++){
         std::cout << "inserting element: " << ids[i];
         const std::string tempString = data[i];
@@ -168,7 +169,7 @@ int main() {
     } else {
         std::cout << "yes" << std::endl;
     }
-    
+
 
     std::string newstring = data[1];
     std::cout << "inserting element: " << dupeIds[1];

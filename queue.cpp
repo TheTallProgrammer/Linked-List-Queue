@@ -64,42 +64,52 @@ void Queue::printQueue(){
 } // End of printQueue
 
 void Queue::getQueueElement(int id, Data *data){
-//    for(int i =0; i < back; i++){
-//        if(queue[i]->id == id){
-//
-//        }
-//    }
+    Node *position = front;
+    bool gotNode = false;
+    while (position != nullptr && !gotNode) {
+        if(id == position->data.id){
+            data->id = position->data.id;
+            data->data = position->data.data;
+            gotNode = true;
+        } else{
+            position = position->next;
+        }
+    }
 } // End of getQueueElement
 
 bool Queue::isEmpty() {return front== nullptr;} // End of isEmpty
 
 bool Queue::peek(Data *data){
-    bool canPeek = false;
-//    if(!isEmpty()){
-//
-//        canPeek = true;
-//    }
-    return canPeek;
+    data->id = front->data.id;
+    data->data = front->data.data;
+    return front;
 } // End of peek
 
 int Queue::size(){return count;} // End of size
 
-void Queue::clearQueue(){
-//    if(!isEmpty()) {
-//        for(int i = back-1; i >= 0; i--) {
-//
-//            back--;
-//        }
-//    }
+bool Queue::clearQueue(){
+    Node *position;
+    while(front!=nullptr){
+        position = front;
+        front = front->next;
+        delete position;
+        count--;
+    }
+    return front;
 } // End of clearQueue
 
 bool Queue::testDuplicate(int *id) {
     bool hasDupe = false;
     Node *position = front;
-    while ((front != nullptr) && hasDupe == false && position->next != nullptr) {
-        if(front != nullptr && *id == position->data.id) {hasDupe = true;} else {
-            position = position->next;
-            if(*id == position->data.id){hasDupe = true;}
+    if(front != nullptr && *id == position->data.id) {hasDupe = true;} else {
+        while ((front != nullptr) && hasDupe == false && position->next != nullptr) {
+            std::cout << "(1)id: " << *id << " : position id: " << position->data.id << std::endl;
+            if (front != nullptr && *id == position->data.id) { hasDupe = true; }
+            else {
+                position = position->next;
+                std::cout << "(2)id: " << *id << " : position id: " << position->data.id << std::endl;
+                if (*id == position->data.id) { hasDupe = true; }
+            }
         }
     }
     return hasDupe;

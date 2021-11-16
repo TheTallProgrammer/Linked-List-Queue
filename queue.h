@@ -24,7 +24,7 @@ public:
     bool isEmpty();
     bool peek(Data *);
     int size();
-    void clearQueue();
+    bool clearQueue();
     bool testDuplicate(int *);
     void initializeNode(int *, const string *, Node *);
 
