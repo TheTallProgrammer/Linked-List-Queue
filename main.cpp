@@ -112,7 +112,7 @@ int main() {
 
     // Main testing for loop
     std::cout << "\n**TESTING ALL METHODS**" << std::endl;
-    for(int i =0; i < 1000; i++){
+    for(int i =0; i < 10; i++){
         // Picks random index
         rNumIndex = (rand() % testdatasize);
         rNumCase = (rand()%3)+1;

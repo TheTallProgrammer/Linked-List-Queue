@@ -35,11 +35,15 @@ bool Queue::enqueue(int id, string*data){
 
 bool Queue::dequeue(){
     bool didDequeue = false;
-    if(!isEmpty()){
+    if(!isEmpty() && front->next != nullptr){
         Node *temp = front;
         front = front->next;
         temp->next = nullptr;
         delete temp;
+        didDequeue = true;
+        count--;
+    } else if(!isEmpty()){
+        front = nullptr;
         didDequeue = true;
         count--;
     }
