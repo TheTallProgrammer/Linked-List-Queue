@@ -103,11 +103,9 @@ bool Queue::testDuplicate(int *id) {
     Node *position = front;
     if(front != nullptr && *id == position->data.id) {hasDupe = true;} else {
         while ((front != nullptr) && hasDupe == false && position->next != nullptr) {
-            std::cout << "(1)id: " << *id << " : position id: " << position->data.id << std::endl;
             if (front != nullptr && *id == position->data.id) { hasDupe = true; }
             else {
                 position = position->next;
-                std::cout << "(2)id: " << *id << " : position id: " << position->data.id << std::endl;
                 if (*id == position->data.id) { hasDupe = true; }
             }
         }
