@@ -74,7 +74,6 @@ bool Queue::getQueueElement(int id, Data *data){
         if(id == position->data.id){
             data->id = position->data.id;
             data->data = position->data.data;
-            std::cout << "id: " << position->data.id << std::endl;
             gotNode = true;
         } else if (id!=position->data.id){
             data->id = 0;
