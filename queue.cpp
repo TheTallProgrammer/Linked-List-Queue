@@ -42,8 +42,11 @@ bool Queue::dequeue(){
         delete temp;
         didDequeue = true;
         count--;
-    } else if(!isEmpty()){
+    } else if(!isEmpty() && front->next == nullptr){
+        Node *temp = front;
         front = nullptr;
+        back = front;
+        delete temp;
         didDequeue = true;
         count--;
     }
