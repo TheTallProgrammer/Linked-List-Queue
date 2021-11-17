@@ -62,6 +62,15 @@ int main() {
         std::cout << "no." << std::endl;
     }
 
+    queue.peek(&data);
+    didRemove = queue.dequeue();
+    std::cout << "Dequeue of front element with id " << data.id << " successful? ";
+    if(didRemove){
+        std::cout << "yes" << std::endl;
+    } else {
+        std::cout << "no" << std::endl;
+    }
+
     std::cout << std::endl;
     std::cout << "printing queue: " << std::endl;
     queue.printQueue();
@@ -72,7 +81,7 @@ int main() {
     for(int i =0; i < testdatasize; i++){
         didInsert = queue.enqueue(ids[i], &strs[i]);
         std::cout << "Enqueue of front element with id " << ids[i] << " successful? ";
-        if(didInsert == true){
+        if(didInsert){
             std::cout << "yes" << std::endl;
         } else {
             std::cout << "no" << std::endl;
@@ -100,7 +109,7 @@ int main() {
         queue.peek(&data);
         didRemove = queue.dequeue();
         std::cout << "Dequeue of front element with id " << data.id << " successful? ";
-        if(didRemove == true){
+        if(didRemove){
             std::cout << "yes" << std::endl;
         } else {
             std::cout << "no" << std::endl;
@@ -112,21 +121,23 @@ int main() {
 
     // Main testing for loop
     std::cout << "\n**TESTING ALL METHODS**" << std::endl;
-    for(int i =0; i < 10; i++){
+    std::cout << std::endl;
+    std::cout << "\n=============================" << std::endl;
+    for(int i =0; i < 1000; i++){
         // Picks random index
         rNumIndex = (rand() % testdatasize);
         rNumCase = (rand()%3)+1;
         Data data;
         bool canPeek = false;
         bool didDequeue = false;
-        std::cout<<"\nIteration: " << iterationCount << std::endl;
+        bool hasNode = false;
+        std::cout<<"Iteration: " << iterationCount << std::endl;
 
         switch(rNumCase){
             case 1:
-                std::cout << "=============================" << std::endl;
                 std::cout << "Enqueue of front element with id " << ids[rNumIndex] << " successful? ";
                 didInsert = queue.enqueue(ids[rNumIndex], &strs[rNumIndex]);
-                if(didInsert == true){
+                if(didInsert){
                     std::cout << "yes" << std::endl;
                 } else {
                     std::cout << "no" << std::endl;
@@ -134,41 +145,42 @@ int main() {
                 std::cout << "\nCurrent amount of entries: " << queue.size() << std::endl;
                 std::cout << "printing queue: " << std::endl;
                 queue.printQueue();
-                std::cout << std::endl;;
+                std::cout << "\n=============================" << std::endl;
                 break;
 
             case 2:
-//                std::cout << "=============================" << std::endl;
-//                std::cout << "case 2" << std::endl;
-//                queue.getQueueElement(ids[rNumIndex], &data);
-//                std::cout << "got queue of id: " << data.id << " : data: " << data.data << std::endl;
-//
-//                std::cout << "Can peek first element? ";
-//                canPeek = queue.peek(&data);
-//                if(canPeek){
-//                    std::cout << "yes. id: " << data.id << " : data: " << data.data << std::endl;
-//                } else {
-//                    std::cout << "no." << std::endl;
-//                }
-//                std::cout << std::endl;
-//
-//                didDequeue = queue.dequeue();
-//                std::cout << "Dequeue of front element with id " << data.id << " successful? ";
-//                if(didDequeue == true){
-//                    std::cout << "yes" << std::endl;
-//                } else {
-//                    std::cout << "no" << std::endl;
-//                }
-//                std::cout << "\nCurrent amount of entries: " << queue.size() << std::endl;
-//                std::cout << "printing queue: " << std::endl;
-//                queue.printQueue();
+                std::cout << "\nCan peek first element? ";
+                canPeek = queue.peek(&data);
+                if(canPeek){
+                    std::cout << "yes. id: " << data.id << " : data: " << data.data << std::endl;
+                    std::cout << "\nDequeue of front element with id " << data.id << " successful? ";
+                    didDequeue = queue.dequeue();
+                    if(didDequeue){
+                        std::cout << "yes" << std::endl;
+                    } else {
+                        std::cout << "no" << std::endl;
+                    }
+                } else {
+                    std::cout << "no." << std::endl;
+                }
+                std::cout << "\nCurrent amount of entries: " << queue.size() << std::endl;
+                std::cout << "\nprinting queue: " << std::endl;
+                queue.printQueue();
+                std::cout << "\n=============================" << std::endl;
                 break;
 
             case 3:
-//                std::cout << "=============================" << std::endl;
-//                std::cout << "case 3" << std::endl;
-//                queue.getQueueElement(ids[rNumIndex], &data);
-//                std::cout << "data from id: " << ids[rNumIndex] << ": " << data.id << ", " << data.data << std::endl;
+                hasNode = queue.getQueueElement(ids[rNumIndex], &data);
+                if(queue.size() > 0){
+                    if(hasNode){
+                        std::cout << "found queue element of id: " << data.id << " : data: " << data.data << std::endl;
+                    } else {
+                        std::cout << "Didn't find a node that matched the random search id" << std::endl;
+                    }
+                } else {
+                    std::cout << "Queue is empty, no id to find" << std::endl;
+                }
+                std::cout << "\n=============================" << std::endl;
                 break;
         }
         iterationCount++;
@@ -176,7 +188,7 @@ int main() {
 
     std::cout << "\n====== CLEARING QUEUE ======" << std::endl;
     queue.clearQueue();
-    std::cout << "QUEUE CLEARED" << std::endl;
+    std::cout << "\nQUEUE CLEARED" << std::endl;
     std::cout << "\nprinting queue: " << std::endl;
     queue.printQueue();
 

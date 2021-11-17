@@ -67,18 +67,26 @@ void Queue::printQueue(){
     }
 } // End of printQueue
 
-void Queue::getQueueElement(int id, Data *data){
+bool Queue::getQueueElement(int id, Data *data){
     Node *position = front;
     bool gotNode = false;
-    while (position->next != nullptr && !gotNode) {
+    while ((front!=nullptr) && position->next != nullptr && !gotNode) {
         if(id == position->data.id){
             data->id = position->data.id;
             data->data = position->data.data;
+            std::cout << "id: " << position->data.id << std::endl;
             gotNode = true;
-        } else{
-            position = position->next;
+        } else if (id!=position->data.id){
+            data->id = 0;
+            data->data = "";
         }
+        position = position->next;
     }
+    if ((front != nullptr) && id!=position->data.id){
+        data->id = 0;
+        data->data = "";
+    }
+    return gotNode;
 } // End of getQueueElement
 
 bool Queue::isEmpty() {return front == nullptr;} // End of isEmpty
@@ -108,8 +116,8 @@ bool Queue::testDuplicate(int *id) {
     bool hasDupe = false;
     Node *position = front;
     if(front != nullptr && *id == position->data.id) {hasDupe = true;} else {
-        while ((front != nullptr) && hasDupe == false && position->next != nullptr) {
-            if (front != nullptr && *id == position->data.id) { hasDupe = true; }
+        while ((front != nullptr) && !hasDupe && position->next != nullptr) {
+            if (*id == position->data.id) { hasDupe = true; }
             else {
                 position = position->next;
                 if (*id == position->data.id) { hasDupe = true; }

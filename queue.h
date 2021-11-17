@@ -20,7 +20,7 @@ public:
     bool enqueue(int, string *);
     bool dequeue();
     void printQueue();
-    void getQueueElement(int, Data *);
+    bool getQueueElement(int, Data *);
     bool isEmpty();
     bool peek(Data *);
     int size();
