@@ -194,11 +194,5 @@ int main() {
 
     std::cout << "\n***************\nTESTS CONCLUDED\n***************" << std::endl;
 
-
-
-    // continue using and testing your table, add and remove data,
-    // do whatever it takes to full test your object and prove it
-    // is robust and can handle all use cases.
-
     return 0;
 }
